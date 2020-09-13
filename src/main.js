@@ -5,6 +5,8 @@ import {union} from 'tagmeme'
 
 import counter from "./counter"
 
+const rootMsg = union(["CounterMessage"])
+
 const [counterState, counterEffect] = counter.init
 
 let effect
@@ -12,10 +14,7 @@ let effect
 if(counterEffect){
     effect = dispatch => {
         counterEffect(message => {
-            dispatch({
-                type: 'counterMessage',
-                data: message
-            })
+            dispatch(rootMsg.CounterMessage(message))
         })
     }
 }
@@ -30,19 +29,16 @@ const init = [
 const Program = program(React.Component, () => ({
     init,
     update(message, state){
-        if(message.type === 'counterMessage') {
-            const [ newCounterState, counterEffect ] =
-                counter.update(message.data, state.counterState)
+        console.log(message)
+        if(message.type === 'CounterMessage') {
+            const [ newCounterState, counterEffect ] = counter.update(message.data, state.counterState)
             const newState = Object.assign(state, {counterState: newCounterState})
 
             let effect
             if(counterEffect) {
                 effect = dispatch => {
                     counterEffect(message => {
-                        dispatch({
-                            type: 'counterMessage',
-                            data: message
-                        })
+                        dispatch(rootMsg.CounterMessage(message))
                     })
                 }
             }
@@ -54,10 +50,7 @@ const Program = program(React.Component, () => ({
             <p>This is the root program.</p>
             {
                 counter.view(state.counterState, message => {
-                    dispatch({
-                        type: 'counterMessage',
-                        data: message
-                    })
+                    dispatch(rootMsg.CounterMessage(message))
                 })
             }
         </div>
