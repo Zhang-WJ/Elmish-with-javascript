@@ -957,6 +957,13 @@ prop-types@^15.6.2:
     object-assign "^4.1.1"
     react-is "^16.8.1"
 
+raj-compose@^0.0.7:
+  version "0.0.7"
+  resolved "http://npm.teammark.cn/raj-compose/-/raj-compose-0.0.7.tgz#edbcacd8d218b3d2f491d97e2f69d9411cd0e3b3"
+  integrity sha512-w3hsoi2jxhVGBgHOruvUVzDOp0Ov1XE1dSg4q3VxdyDdL1qKu0S6cZwR1TfK2ZmK06w7lYJEsvUxDR4VMYa/Pw==
+  dependencies:
+    invariant "^2.2.2"
+
 raj-react@^0.0.7:
   version "0.0.7"
   resolved "http://npm.teammark.cn/raj-react/-/raj-react-0.0.7.tgz#1daa3faf14ea6d35ab4cfdd249bc4f4bc89ef765"

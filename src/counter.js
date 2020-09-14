@@ -71,3 +71,10 @@ export default {
     }
 }
 
+export function initWithCount(initialCount) {
+    return [initialCount]
+}
+
+export function isCountHigh(state) {
+    return state > 100
+}

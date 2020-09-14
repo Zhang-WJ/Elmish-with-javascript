@@ -2,28 +2,20 @@ import React from 'react'
 import ReactDom from 'react-dom'
 import {program} from 'raj-react'
 import {union} from 'tagmeme'
+import {mapEffect} from 'raj-compose'
 
-import counter from "./counter"
+import counter, {initWithCount, isCountHigh} from "./counter"
 
 const rootMsg = union(["CounterMessage"])
 
-const [counterState, counterEffect] = counter.init
+const [counterState, counterEffect] = initWithCount(99)
 
-let effect
+const counterMsg = message => rootMsg.CounterMessage(message)
 
-if(counterEffect){
-    effect = dispatch => {
-        counterEffect(message => {
-            dispatch(rootMsg.CounterMessage(message))
-        })
-    }
-}
 
 const init = [
-    {
-        counterState
-    },
-    effect
+    {counterState},
+    mapEffect(counterEffect, counterMsg)
 ]
 
 const Program = program(React.Component, () => ({
@@ -33,16 +25,10 @@ const Program = program(React.Component, () => ({
         if(message.type === 'CounterMessage') {
             const [ newCounterState, counterEffect ] = counter.update(message.data, state.counterState)
             const newState = Object.assign(state, {counterState: newCounterState})
-
-            let effect
-            if(counterEffect) {
-                effect = dispatch => {
-                    counterEffect(message => {
-                        dispatch(rootMsg.CounterMessage(message))
-                    })
-                }
+            if(isCountHigh(newCounterState)) {
+                console.log('child action')
             }
-            return [newState, effect]
+            return [newState, mapEffect(counterEffect, counterMsg)]
         }
     },
     view(state, dispatch) {
@@ -50,14 +36,10 @@ const Program = program(React.Component, () => ({
             <p>This is the root program.</p>
             {
                 counter.view(state.counterState, message => {
-                    dispatch(rootMsg.CounterMessage(message))
+                    dispatch(counterMsg(message))
                 })
             }
-            {
-                counter.view(state.counterState, message => {
-                    dispatch(rootMsg.CounterMessage(message))
-                })
-            }
+
         </div>
     }
 }))
