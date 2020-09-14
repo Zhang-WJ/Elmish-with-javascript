@@ -53,6 +53,11 @@ const Program = program(React.Component, () => ({
                     dispatch(rootMsg.CounterMessage(message))
                 })
             }
+            {
+                counter.view(state.counterState, message => {
+                    dispatch(rootMsg.CounterMessage(message))
+                })
+            }
         </div>
     }
 }))
